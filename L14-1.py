@@ -77,11 +77,22 @@ class Tree:
         elif node.left is not None and node.right is not None:
             # Якщо елемент має двох нащадків, то замінити його на його наступника
             successor = node.right
-            while successor.left is not None:
-                successor = successor.left
-            self.remove(successor.value)
-            node.value = successor.value
+        while successor.left is not None:
+            successor_parent = successor
+            successor = successor.left
+        if node.right == successor:
+            successor.left = node.left
         else:
+            successor_parent.left = successor.right
+            successor.left = node.left
+            successor.right = node.right
+        if parent is None:
+            self.root = successor
+        elif parent.left == node:
+            parent.left = successor
+        else:
+            parent.right = successor
+    else:
             # Якщо елемент має одного нащадка, то замінити його на цього нащадка
             if node.left is not None:
                 child = node.left
