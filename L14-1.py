@@ -1,46 +1,37 @@
 class Node:
-    def __init__(self, value=None):
-        self.value = value
+    def __init__(self, data):
         self.left = None
         self.right = None
+        self.data = data
 
 class Tree:
     def __init__(self):
         self.root = None
 
-    def add_list(self, value_list):
-        for value in value_list:
-            self.add_node(value)
+    def add_node(self, data):
+        if not self.root:
+            self.root = Node(data)
+            return
 
-    def add_node(self, value):
-        new_node = Node(value)
-        if self.root is None:
-            self.root = new_node
-        else:
-            current_node = self.root
-            while True:
-                if value < current_node.value:
-                    if current_node.left is None:
-                        current_node.left = new_node
-                        break
-                    else:
-                        current_node = current_node.left
+        curr_node = self.root
+        while curr_node:
+            if data < curr_node.data:
+                if curr_node.left:
+                    curr_node = curr_node.left
                 else:
-                    if current_node.right is None:
-                        current_node.right = new_node
-                        break
-                    else:
-                        current_node = current_node.right
+                    curr_node.left = Node(data)
+                    break
+            elif data > curr_node.data:
+                if curr_node.right:
+                    curr_node = curr_node.right
+                else:
+                    curr_node.right = Node(data)
+                    break
+            else:
+                # data is already in the tree
+                break
 
-    def print_tree(self, node=None, level=0):
-        if not node:
-            node = self.root
-        if node.right:
-            self.print_tree(node.right, level + 1)
-        print(' ' * 4 * level + '->', node.value)
-        if node.left:
-            self.print_tree(node.left, level + 1)
-
-my_tree = Tree()
-my_tree.add_list([3, 7, 1, 5, 9])
-my_tree.print_tree()
+    def add_list(self, data_list):
+        for data in data_list:
+            self.add_node(data)
+            
